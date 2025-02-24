@@ -1,3 +1,33 @@
+#include <iostream>
+#include <locale.h>
+
+using namespace std;
+
+
+/*
+    Estructua "fecha"
+        Contiene 3 datos enteros, que equivalen al día,
+        el mes y el año de la fecha.
+*/
+
+struct fecha {
+	int day;
+	int month;
+	int year;
+};
+
+/*
+    Función booleana "validarFecha"
+        Recibe como tipo de dato una fecha (previamente definida)
+        y devuelve un valor booleano (falso o verdadero).
+        
+        Hace una serie de comprobaciones para verificar si es válida.
+            1. Verifica si es bisiesto con una serie de comparaciones.
+            2. Haciendo uso de un switch con respecto al mes, verifica
+            si el día está entre el rango posible dependiendo de su mes.
+            Si lo está, devuelve verdadero, y si no, devuelve falso.
+*/
+
 bool validarFecha(fecha f) {
 
 	bool esBisiesto;
@@ -43,4 +73,27 @@ bool validarFecha(fecha f) {
 	default:
 		return false;
 	}
+}
+
+/*
+    Función principal
+        Crea un dato de timpo fecha, le pide al usuario sus
+        valores y realiza una comprobación para verificar si
+        es o no válido, y muestra un mensaje de confirmación.
+*/
+    
+
+int main() {
+	setlocale(LC_ALL, "Spanish");
+	
+	fecha f;
+	cout<<"Ingrese el dia"<<endl;
+	cin>>f.day;
+	cout<<"Ingrese el mes"<<endl;
+	cin>>f.month;
+	cout<<"Ingrese el año"<<endl;
+	cin>>f.year;
+
+	if(validarFecha (f)) cout<<"Fecha válida"<<endl;
+	else cout<<"Fecha inválida"<<endl;
 }
