@@ -1,14 +1,3 @@
-#include <iostream>
-#include <locale.h>
-
-using namespace std;
-
-struct fecha {
-	int day;
-	int month;
-	int year;
-};
-
 bool validarFecha(fecha f) {
 
 	bool esBisiesto;
@@ -54,20 +43,4 @@ bool validarFecha(fecha f) {
 	default:
 		return false;
 	}
-}
-
-
-int main() {
-	setlocale(LC_ALL, "Spanish");
-	
-	fecha f;
-	cout<<"Ingrese el dia"<<endl;
-	cin>>f.day;
-	cout<<"Ingrese el mes"<<endl;
-	cin>>f.month;
-	cout<<"Ingrese el año"<<endl;
-	cin>>f.year;
-
-	if(validarFecha (f)) cout<<"Fecha válida"<<endl;
-	else cout<<"Fecha inválida"<<endl;
 }
