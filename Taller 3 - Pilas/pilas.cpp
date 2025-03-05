@@ -106,6 +106,22 @@ void mostrar_pila(ptrPila p)
     }
 }
 
+
+void mostrar_pila_encontrada(ptrPila p, int valor)
+{
+    ptrPila aux = p;  
+    while (aux != NULL)
+    {
+        if(aux->nro == valor){
+            cout << "[ AQUI -> " << aux->nro << " <- AQUI ]" << endl;  
+        }
+        else{
+        cout << "[ " << aux->nro << " ]" << endl;  
+        }
+        aux = aux->sgte;                           
+    }
+}
+
 /*
  * Nombre de la subrutina: destruir_pila
  * Descripción:
@@ -153,6 +169,38 @@ void invertir_pila(ptrPila &p){
 
 }
 
+
+int encontrar_elemento(ptrPila p, int valor){
+    ptrPila aux = p;
+    int pos = 0;
+    while(aux != NULL){
+        if(aux->nro == valor){
+            return pos;
+        }
+        pos++;
+        aux = aux->sgte;
+    }
+    return -1;
+}
+
+
+bool esta_ordenada(ptrPila p){
+    ptrPila aux = p;
+    bool orden;
+
+    while ((aux->sgte) != NULL)
+    {
+        if(aux->nro < (aux->sgte)->nro){
+            orden = true;
+        }
+        else{
+            orden = false;
+            break;
+        }
+        aux = aux->sgte;
+    }
+}
+
 /*
  * Nombre de la subrutina: menu
  * Descripción:
@@ -183,7 +231,8 @@ void menu()
     cout << "3. MOSTRAR PILA\n";
     cout << "4. DESTRUIR PILA\n";
     cout << "5. INVERTIR PILA\n";
-    cout << "6. SALIR\n";
+    cout << "6. ENCONTRAR UN ELEMENTO EN LA PILA\n";
+    cout << "7. VERIFICAR SI ESTA ORDENADA ASCENDENTEMENTE\n";
     cout << "\nINGRESE OPCION: ";
 }
 
@@ -255,15 +304,33 @@ int main()
                 invertir_pila(p);
                 cout << "\n\n\tPila invertida...\n\n";
                 break;
-            case 6:
-                cout << "\n\n\tSaliendo del programa...\n\n";
+            case 6: {
+                cout << "ELEMENTO A BUSCAR: ";
+                cin >> dato;
+                int encontrado = encontrar_elemento(p, dato);
+                if(encontrado != -1) {
+                    cout << "El elemento fue encontrado en la posicion " << encontrado << endl;
+                    mostrar_pila_encontrada(p, dato);
+                } else {
+                    cout << "El elemento no fue encontrado" << endl;
+                }
                 break;
+            }
+            case 7: {
+                bool estaOrdenada = esta_ordenada(p);
+                if(estaOrdenada)
+                    cout << "La pila esta ordenada" << endl;
+                else
+                    cout << "La pila no esta ordenada" << endl;
+                break;
+            }
+                
         }
 
         cout << endl;
         system("pause");  // Pausa la ejecución para que el usuario pueda ver los resultados de la operación.
         system("cls");    // Limpia la pantalla de la consola para mostrar nuevamente el menú.
-    } while (op != 6);    // El ciclo continúa hasta que el usuario ingrese la opción 6 para salir.
+    } while (op != 8);    // El ciclo continúa hasta que el usuario ingrese la opción 6 para salir.
 
     return 0;  // Finaliza el programa indicando que todo se ejecutó correctamente.
 }
