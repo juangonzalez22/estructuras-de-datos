@@ -240,6 +240,7 @@ void menu()
     cout << "9. ELIMINAR UN ELEMENTO X\n";
     cout << "10. AÑADIR UN ELEMENTO X\n";
     cout << "11. DIVIDIR UNA PILA EN DOS SEGUN SUS ELEMENTOS\n";
+    cout << "12. SALIR\n";
     cout << "\nINGRESE OPCION: ";
 }
 
@@ -279,6 +280,9 @@ int main()
                 push(q, dato);
                 cout << "\n\n\tNumero " << dato << " apilado...\n\n";
             }
+            else{
+                cout<<"Esta pila no existe. Volviendo al menu."<<endl;
+            }
 
             break;
         case 2:
@@ -293,6 +297,9 @@ int main()
             else if (pila == 2)
             {
                 cout << "\n\n\tNumero " << pop(q) << " desapilado...\n\n";
+            }
+            else{
+                cout<<"Esta pila no existe. Volviendo al menu."<<endl;
             }
             break;
         case 3:
@@ -318,6 +325,9 @@ int main()
                     cout << "\n\tPila Vacia..!\n\n";
                 break;
             }
+            else{
+                cout<<"Esta pila no existe. Volviendo al menu."<<endl;
+            }
 
         case 4:
 
@@ -333,6 +343,9 @@ int main()
             {
                 destruir_pila(q);
                 cout << "\n\n\tPila eliminada...\n\n";
+            }
+            else{
+                cout<<"Esta pila no existe. Volviendo al menu."<<endl;
             }
 
             break;
@@ -350,6 +363,9 @@ int main()
             {
                 invertir_pila(q);
                 cout << "\n\n\tPila invertida...\n\n";
+            }
+            else{
+                cout<<"Esta pila no existe. Volviendo al menu."<<endl;
             }
 
             break;
@@ -389,6 +405,9 @@ int main()
                     cout << "El elemento no fue encontrado" << endl;
                 }
             }
+            else{
+                cout<<"Esta pila no existe. Volviendo al menu."<<endl;
+            }
 
             break;
         }
@@ -415,6 +434,9 @@ int main()
                 else
                     cout << "La pila no esta ordenada" << endl;
             }
+            else{
+                cout<<"Esta pila no existe. Volviendo al menu."<<endl;
+            }
             break;
         }
         case 8:
@@ -427,6 +449,7 @@ int main()
             {
                 cout << "Las pilas no son iguales" << endl;
             }
+            
         }
         break;
         case 9:
@@ -457,6 +480,10 @@ int main()
                 }
 
             }
+            else{
+                cout<<"Esta pila no existe. Volviendo al menu."<<endl;
+            }
+
             break;
         }
         case 10:
@@ -486,6 +513,10 @@ int main()
                 mostrar_pila_encontrada(q, dato);
 
             }
+            else{
+                cout<<"Esta pila no existe. Volviendo al menu."<<endl;
+            }
+
             break;
 
         }
@@ -536,6 +567,9 @@ int main()
                 else{
                     cout<<"Las pilas originales permanecen iguales"<<endl;
                 }
+            }
+            else{
+                cout<<"Esta pila no existe. Volviendo al menu."<<endl;
             }
         }
         break;
