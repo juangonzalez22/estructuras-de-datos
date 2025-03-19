@@ -13,7 +13,12 @@ void menu1()
     cout<<" 5. BUSCAR ELEMENTO           "<<endl;
     cout<<" 6. ELIMINAR ELEMENTO 'V'     "<<endl;
     cout<<" 7. ELIMINAR ELEMENTOS CON VALOR 'V'"<<endl;
-    cout<<" 8. SALIR                     "<<endl;
+    cout<<" 8. BUSCAR CUANTAS VECES APARECE UN ELEMENTO V   "<<endl;
+    cout<<" 9. INVERTIR LISTA"<<endl;
+    cout<<" 10. PROMEDIO DE LOS ELEMENTOS DE LA LISTA"<<endl;
+    cout<<" 11. BUSCAR EL MAYOR ELEMENTO DE LA LISTA"<<endl;
+    cout<<" 12. VERIFICAR SI LA LISTA ESTA ORDENADA"<<endl;
+
     cout<<"\n INGRESE OPCION: ";
 }
 // ---------------------------------------------
@@ -73,12 +78,44 @@ int main()
             cout<<"\n Valor repetido a eliminar: ";
             cin>> _dato;
             eliminaRepetidos(lista, _dato);
-            break;}
+            break;
+        case 8:
+            cout<<"\n Valor a buscar: ";
+            cin>> _dato;
+            cout<<"El valor aparece "<<cantidadElemento(lista, _dato)<<" veces en la lista."<<endl;
+            break;
+        case 9:
+            invertirLista(lista);
+            cout<<"\nLista invertida... ";
+            break;
+        case 10:
+            _dato = promedioLista(lista);
+            if(_dato == -1){
+                cout<<"No hay elementos en la lista!"<<endl;
+            }
+            else{
+                cout<<"El promedio de los elementos en la lista es de "<<_dato<<endl;
+            }
+            break;
+        case 11:
+            cout<<"El dato mayor en la lista es "<<datoMayor(lista)<<endl;
+            break;
+        case 12:
+            if(estaOrdenada(lista)){
+                cout<<"La lista esta ordenada."<<endl;
+            }
+            else{
+                cout<<"La lista no esta ordenada."<<endl;
+            }
+            break;
+        }
+        
+        
             
         cout<<endl<<endl;
         system("pause");
         system("cls");
-    }while(op!=8);
+    }while(op!=13);
     system("pause");
     return 0;
 }

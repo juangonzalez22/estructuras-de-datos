@@ -9,6 +9,28 @@ struct nodo{
     struct nodo *sgte;
 };
 typedef struct nodo *Tlista;
+typedef nodo *ptrPila;
+
+void push(ptrPila &p, int valor)
+{
+    ptrPila aux;
+    aux = new (nodo);
+    aux->nro = valor;
+    aux->sgte = p;
+    p = aux;
+}
+int pop(ptrPila &p)
+{
+    int num;
+    ptrPila aux;
+    aux = p;
+    num = aux->nro;
+    p = aux->sgte;
+    delete (aux);
+    return num;
+}
+
+
 //-------------------------------------------
 void insertarInicio(Tlista &lista, int valor)
 {
@@ -169,4 +191,76 @@ void eliminaRepetidos(Tlista &lista, int valor)
         }
     } // fin del while
     cout<<"\n\n Valores eliminados..!"<<endl;
+}
+
+int cantidadElemento(Tlista lista, int elemento){
+
+    int cantidad = 0;
+    while(lista != NULL)
+    {
+        if(lista->nro == elemento){
+            cantidad++;
+        }
+        lista = lista->sgte;
+    }
+
+    return cantidad;
+}
+
+void invertirLista(Tlista &lista){
+    ptrPila aux = NULL;
+
+    while (lista != NULL)
+    {
+        push(aux, lista->nro);
+        lista = lista->sgte;
+    }
+
+    while (aux != NULL){
+        insertarFinal(lista, pop(aux));
+    }
+
+}
+
+float promedioLista(Tlista lista){
+    float sumaElementos = 0;
+    float cantidadElementos = 0;
+
+    while (lista != NULL){
+        sumaElementos += lista->nro;
+        cantidadElementos++;
+
+        lista = lista->sgte;
+    }
+
+    if(cantidadElementos == 0){
+        return -1;
+    }
+    else return sumaElementos/cantidadElementos;
+}
+
+int datoMayor(Tlista lista){
+    int datoMayor = lista->nro;
+
+    while (lista !=NULL)
+    {
+        if(lista->nro >= datoMayor) datoMayor = lista->nro;
+        lista = lista->sgte;
+    }
+
+    return datoMayor;
+    
+}
+
+bool estaOrdenada(Tlista lista)
+{
+    if (lista == NULL || lista->sgte == NULL)
+        return true;
+
+    for (Tlista aux = lista; aux->sgte != NULL; aux = aux->sgte)
+    {
+        if (aux->nro >= aux->sgte->nro)
+            return false;
+    }
+    return true;
 }
