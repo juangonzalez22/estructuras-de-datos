@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1648481802 source:c:\users\fralm\desktop\vuelos\main.cpp
+	<iostream>
+	<fstream>
+	<string.h>
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+
