@@ -1,8 +1,15 @@
+// Bibliotecas importadas. Para poder mostrar en pantalla, leer y escribir archivos, y manejar strings.
 #include <iostream>
 #include <fstream>
 #include <string.h>
-#include <limits>
+
+// Using namespace para evitar escribir std:: antes de cada uso de cout, cin, etc.
 using namespace std;
+
+// Primera estructura creada: Vuelo.
+// Contiene los datos del vuelo, como su número, orígen, destino, matrícula... entre otros.
+// Cuenta también con dos punteros a otras dos estructuras: Su vuelo siguiente y la lista de pasajeros asignados a ese vuelo.
+// La variable de "Estado" representa si está planeado (0) o ya fue realizado (1)
 
 struct Vuelo
 {
@@ -18,8 +25,12 @@ struct Vuelo
     struct Pasajeros *ListaPasajeros;
 };
 
+// Definición de un puntero a la estructura Vuelo, para facilitar su uso en el resto del código.
 typedef struct Vuelo *DatosVuelo;
 
+// Segunda estructura creada: Pasajeros.
+// Contiene los datos del pasajero, como su cédula, su nombre, su teléfono... entre otros.
+// La variable "Estado" representa si está reservado (1) o si ya está abordado (2)
 struct Pasajeros
 {
     char Cedula[20];
@@ -29,8 +40,15 @@ struct Pasajeros
     struct Pasajeros *Sgte;
 };
 
+// Definición de un puntero a la estructura Pasajeros, para facilitar su uso en el resto del código.
 typedef struct Pasajeros *DatosPasajero;
 
+// La siguiente es la función para abrir el archivo "VUELOS.txt" y extraer sus datos.
+// Primeramente se crea un objeto ifstream llamado "leer" que leerá los datos guardados en el archivo.
+// Se crean varios strings y un int para representar los tipos de datos
+// Mientras el archivo tenga los datos, en ese orden...
+// Se creará un nuevo vuelo, y se le asignarán los datos leídos al mismo.
+// Se comprueba si la lista de vuelos está vacía, y dependiendo si lo está o no, se ubica el vuelo.
 void AbrirArchivoVuelo(DatosVuelo &Vuelos)
 {
     ifstream leer("VUELOS.txt");
@@ -85,6 +103,14 @@ void AbrirArchivoVuelo(DatosVuelo &Vuelos)
     leer.close();
 }
 
+// La siguiente es la función para poder abrir el archivo "PASAJEROS.txt" y extraer sus datos.
+// Primeramente se crea un objeto ifstream llamado "leer" que leerá los datos guardados en el archivo.
+// Se crean varios strings y un int para representar los tipos de datos
+// Mientras el archivo tenga los datos, en ese orden...
+// Se creará una lista auxiliar que tendrá los datos de todos los vuelos.
+// Mientras el vuelo no sea nulo, pero tampoco tenga el mismo número, se avanzará.
+// Al encontrar el vuelo (cuando no sea nulo), se creará un nuevo pasajero.
+// Se comprueba si la lista de pasajeros está vacía, y dependiendo si lo está o no, se ubica el pasajero.
 void AbrirArchivoPasajeros(DatosVuelo Vuelos)
 {
     ifstream leer("PASAJEROS.txt");
@@ -137,7 +163,8 @@ void AbrirArchivoPasajeros(DatosVuelo Vuelos)
     leer.close();
 }
 
-string FormatearHora(const char *hora)
+// Función simple para convertir un string de hora en el formato ##:##
+string FormatearHora(char *hora)
 {
     string h(hora);
     if (h.length() == 4)
@@ -147,6 +174,7 @@ string FormatearHora(const char *hora)
     return h;
 }
 
+// Función simple para convertir un string de fecha en el formato ##/##/####
 string FormatearFecha(const char *fecha)
 {
     string f(fecha);
@@ -157,14 +185,20 @@ string FormatearFecha(const char *fecha)
     return f;
 }
 
-void ActualizarArchivoVuelos(DatosVuelo Vuelos) {
+// La siguiente es una función creada para actualizar el archivo de vuelos.
+// Se crea un objeto ofstream, y se abre en modo truncado (donde se borra todo el contenido anterior)
+// Si no se pudo abrir, se muestra un mensaje de error.
+// Se recorre la lista de vuelos, y mientras no se haya acabado, se van escribiendo todos los vuelos.
+void ActualizarArchivoVuelos(DatosVuelo Vuelos)
+{
     ofstream archivo("VUELOS.txt", ios::trunc);
-    if (!archivo.is_open()) {
-        cout << "No se pudo abrir VUELOS.txt para actualizar." << endl;
-        return;
+    if (archivo.bad())
+    {
+        cout << "El archivo no se pudo abrir..." << endl;
     }
     DatosVuelo aux = Vuelos;
-    while (aux != NULL) {
+    while (aux != NULL)
+    {
         archivo << aux->NroDeVuelo << " "
                 << aux->Origen << " "
                 << aux->Destino << " "
@@ -178,16 +212,23 @@ void ActualizarArchivoVuelos(DatosVuelo Vuelos) {
     archivo.close();
 }
 
-void ActualizarArchivoPasajeros(DatosVuelo Vuelos) {
+// La siguiente es una función creada para actualizar el archivo de vuelos.
+// Se crea un objeto ofstream, y se abre en modo truncado (donde se borra todo el contenido anterior)
+// Si no se pudo abrir, se muestra un mensaje de error.
+// Se recorre la lista de vuelos, y mientras se recorre, se recorre la lista de pasajeros de cada vuelo.
+void ActualizarArchivoPasajeros(DatosVuelo Vuelos)
+{
     ofstream archivo("PASAJEROS.txt", ios::trunc);
-    if (!archivo.is_open()) {
-        cout << "No se pudo abrir PASAJEROS.txt para actualizar." << endl;
-        return;
+    if (archivo.bad())
+    {
+        cout << "El archivo no se pudo abrir..." << endl;
     }
     DatosVuelo vuelo = Vuelos;
-    while (vuelo != NULL) {
+    while (vuelo != NULL)
+    {
         DatosPasajero pasajero = vuelo->ListaPasajeros;
-        while (pasajero != NULL) {
+        while (pasajero != NULL)
+        {
             archivo << vuelo->NroDeVuelo << " "
                     << pasajero->Cedula << " "
                     << pasajero->NombrePersona << " "
@@ -200,7 +241,15 @@ void ActualizarArchivoPasajeros(DatosVuelo Vuelos) {
     archivo.close();
 }
 
-void AñadirVuelo(DatosVuelo &Vuelos) {
+// La siguiente es la función para añadir un vuelo a la lista.
+// Se crean dos listas, donde una de ellas es un nuevo vuelo.
+// Se crean y solicitan los datos del vuelo, y se llena el vuelo con ellos.
+// Si la lista está vacía, se asigna como el primer vuelo.
+// De lo contrario, se recorren todos los vuelos, hasta llegar al final y asignar este.
+// Se abre nuevamente el archivo de vuelos en modo de añadir, y se añade un nuevo vuelo al final.
+
+void AñadirVuelo(DatosVuelo &Vuelos)
+{
     DatosVuelo t, q = new Vuelo;
 
     char NroDeVuelo[20];
@@ -238,18 +287,23 @@ void AñadirVuelo(DatosVuelo &Vuelos) {
     q->Sgte = NULL;
     q->ListaPasajeros = NULL;
 
-    if (Vuelos == NULL) {
+    if (Vuelos == NULL)
+    {
         Vuelos = q;
-    } else {
+    }
+    else
+    {
         t = Vuelos;
-        while (t->Sgte != NULL) {
+        while (t->Sgte != NULL)
+        {
             t = t->Sgte;
         }
         t->Sgte = q;
     }
 
     ofstream archivo("VUELOS.txt", ios::app);
-    if (archivo.is_open()) {
+    if (archivo.good())
+    {
         archivo << q->NroDeVuelo << " "
                 << q->Origen << " "
                 << q->Destino << " "
@@ -259,11 +313,16 @@ void AñadirVuelo(DatosVuelo &Vuelos) {
                 << q->FechaVuelo << " "
                 << q->Estado << endl;
         archivo.close();
-    } else {
+    }
+    else
+    {
         cout << "No se pudo abrir VUELOS.txt para agregar el nuevo vuelo." << endl;
     }
 }
 
+// Esta función recorre toda la lista de vuelos.
+// Si no hay vuelos, se muestra un mensaje indicándolo.
+// De lo contrario, se mostrarán todos los vuelos con todos sus datos.
 void MostrarVuelos(DatosVuelo Vuelos)
 {
     DatosVuelo aux = Vuelos;
@@ -288,17 +347,27 @@ void MostrarVuelos(DatosVuelo Vuelos)
     cout << "---------------------------" << endl;
 }
 
-void AñadirPasajeros(DatosVuelo &Vuelos) {
+// La siguiente función añade un pasajero a su vuelo indicado.
+// Se ingresa el número del vuelo, y se busca que exista entre todos los vuelos. Si no existe, se sale.
+// Si existe, se asigna a p como el vuelo donde está
+// Si existen, se crea un nuevo pasajero que se llena con los datos recibidos.
+// Se añade el pasajero al vuelo. Si no tiene pasajeros, se añade como primero, pero si tiene pasajeros, se añade al último.
+// Se abre nuevamente el archivo de vuelos en modo de añadir, y se añade un nuevo pasajero al final.
+
+void AñadirPasajeros(DatosVuelo &Vuelos)
+{
     char nro[7];
     cout << "\nIngrese el numero del vuelo: ";
     cin >> nro;
 
     DatosVuelo p = Vuelos;
-    while (p != NULL && strcmp(p->NroDeVuelo, nro) != 0) {
+    while (p != NULL && strcmp(p->NroDeVuelo, nro) != 0)
+    {
         p = p->Sgte;
     }
 
-    if (p == NULL) {
+    if (p == NULL)
+    {
         cout << "El vuelo no existe. Regresando." << endl;
         return;
     }
@@ -322,31 +391,41 @@ void AñadirPasajeros(DatosVuelo &Vuelos) {
     nuevo->Estado = estado;
     nuevo->Sgte = NULL;
 
-    if (p->ListaPasajeros == NULL) {
+    if (p->ListaPasajeros == NULL)
+    {
         p->ListaPasajeros = nuevo;
-    } else {
+    }
+    else
+    {
         DatosPasajero aux = p->ListaPasajeros;
-        while (aux->Sgte != NULL) {
+        while (aux->Sgte != NULL)
+        {
             aux = aux->Sgte;
         }
         aux->Sgte = nuevo;
     }
 
     ofstream archivo("PASAJEROS.txt", ios::app);
-    if (archivo.is_open()) {
+    if (archivo.good())
+    {
         archivo << p->NroDeVuelo << " "
                 << nuevo->Cedula << " "
                 << nuevo->NombrePersona << " "
                 << nuevo->Telefono << " "
                 << nuevo->Estado << endl;
         archivo.close();
-    } else {
+    }
+    else
+    {
         cout << "No se pudo abrir PASAJEROS.txt para agregar el pasajero." << endl;
     }
 
     cout << "Pasajero agregado exitosamente al vuelo " << p->NroDeVuelo << endl;
 }
 
+// La siguiente es una función para mostrar los pasajeros de un vuelo.
+// Se pide que se ingres el vuelo y se comprueba si existe.
+// Si existe, se empieza a recorrer la lista de pasajeros mostrando cada uno.
 void mostrarPasajeros(DatosVuelo Vuelos)
 {
     char nro[7];
@@ -378,18 +457,27 @@ void mostrarPasajeros(DatosVuelo Vuelos)
     cout << "---------------------------" << endl;
 }
 
-void abordarPasajero(DatosVuelo Vuelos) {
+// La siguiente es la función para abordar un pasajero.
+// Se pide que se ingrese el número del vuelo, y se empieza a recorrer hasta encontrarlo.
+// Al encontrarse, se pide que ingrese la cédula del pasajero, y se empiezan a recorrer los pasajeros hasta encontrar al indicado
+// Si ya fue abordado, no hace nada.
+// Se cambian los datos del pasajero, y se aborda. Además, se modifica el archivo.
+
+void abordarPasajero(DatosVuelo Vuelos)
+{
     char nro[7];
     char cedula[20];
     cout << "\nIngrese el numero del vuelo: ";
     cin >> nro;
 
     DatosVuelo vuelo = Vuelos;
-    while (vuelo != NULL && strcmp(vuelo->NroDeVuelo, nro) != 0) {
+    while (vuelo != NULL && strcmp(vuelo->NroDeVuelo, nro) != 0)
+    {
         vuelo = vuelo->Sgte;
     }
 
-    if (vuelo == NULL) {
+    if (vuelo == NULL)
+    {
         cout << "El vuelo no existe. Regresando." << endl;
         return;
     }
@@ -398,29 +486,50 @@ void abordarPasajero(DatosVuelo Vuelos) {
     cin >> cedula;
 
     DatosPasajero pasajero = vuelo->ListaPasajeros;
-    while (pasajero != NULL) {
-        if (strcmp(pasajero->Cedula, cedula) == 0) {
-            pasajero->Estado = 2;
-            cout << "Pasajero abordado exitosamente." << endl;
-            ActualizarArchivoPasajeros(Vuelos);
-            return;
+    while (pasajero != NULL)
+    {
+        if (strcmp(pasajero->Cedula, cedula) == 0)
+        {
+            if (pasajero->Estado == 2)
+            {
+                cout << "El pasajero ya ha sido abordado anteriormente." << endl;
+                return;
+            }
+            else
+            {
+                pasajero->Estado = 2;
+                cout << "Pasajero abordado exitosamente." << endl;
+                ActualizarArchivoPasajeros(Vuelos);
+                return;
+            }
         }
         pasajero = pasajero->Sgte;
     }
+
     cout << "El pasajero no se encontró en el vuelo." << endl;
 }
 
-void realizarVuelo(DatosVuelo &Vuelos) {
+// Esta es la función para realizar un vuelo
+// Se pide que se ingrese el número del vuelo, y se busca en la lista.
+// Al encontrarlo, se realiza una comprobación, para ver si puede despegar.
+// Se recorre toda su lista de pasajeros, y si hay alguno que no ha sido abordado, se dice que no puede despegar.
+// Si el vuelo puede despegar, se cambia su estado, y se actualiza el archivo.
+// De lo contrario, se muestra que no puede despegar, o que ya ha despegado.
+
+void realizarVuelo(DatosVuelo &Vuelos)
+{
     char nro[7];
     cout << "\nIngrese el numero del vuelo: ";
     cin >> nro;
 
     DatosVuelo vuelo = Vuelos;
-    while (vuelo != NULL && strcmp(vuelo->NroDeVuelo, nro) != 0) {
+    while (vuelo != NULL && strcmp(vuelo->NroDeVuelo, nro) != 0)
+    {
         vuelo = vuelo->Sgte;
     }
 
-    if (vuelo == NULL) {
+    if (vuelo == NULL)
+    {
         cout << "El vuelo no existe. Regresando." << endl;
         return;
     }
@@ -428,28 +537,36 @@ void realizarVuelo(DatosVuelo &Vuelos) {
     bool puedeDespegar = true;
     DatosPasajero pasajero = vuelo->ListaPasajeros;
 
-    while (pasajero != NULL) {
-        if (pasajero->Estado != 2) {
+    while (pasajero != NULL)
+    {
+        if (pasajero->Estado != 2)
+        {
             puedeDespegar = false;
             break;
         }
         pasajero = pasajero->Sgte;
     }
 
-    if (puedeDespegar && vuelo->Estado != 1) {
+    if (puedeDespegar && vuelo->Estado != 1)
+    {
         vuelo->Estado = 1;
         cout << "Vuelo realizado exitosamente." << endl;
         ActualizarArchivoVuelos(Vuelos);
-        ActualizarArchivoPasajeros(Vuelos);
     }
-    else if (vuelo->Estado == 1) {
+    else if (vuelo->Estado == 1)
+    {
         cout << "El vuelo ya ha sido realizado." << endl;
     }
-    else {
+    else
+    {
         cout << "El vuelo no puede despegar, hay pasajeros que no están abordados." << endl;
     }
 }
 
+
+// En esta función, se muestran todos los vuelos programados.
+// Se crea una lista auxiliar, y se recorre.
+// Se van mostrando los vuelos, no sin antes comprobar que su estado es "programado".
 void MostrarVuelosProgramados(DatosVuelo Vuelos)
 {
     DatosVuelo aux = Vuelos;
@@ -477,6 +594,9 @@ void MostrarVuelosProgramados(DatosVuelo Vuelos)
     cout << "---------------------------" << endl;
 }
 
+// En esta función, se muestran todos los vuelos realizados.
+// Se crea una lista auxiliar, y se recorre.
+// Se van mostrando los vuelos, no sin antes comprobar que su estado es "realizado".
 void MostrarVuelosRealizados(DatosVuelo Vuelos)
 {
     DatosVuelo aux = Vuelos;
@@ -503,6 +623,11 @@ void MostrarVuelosRealizados(DatosVuelo Vuelos)
     }
     cout << "---------------------------" << endl;
 }
+
+// Con esta función, se muestra todo lo que un pasajero ha hecho.
+// Primero, se comprueba que haya vuelos
+// Se empieza a recorrer la lista de vuelos, y la lista de pasajeros asignado a cada uno.
+// Si el pasajero se encuentra en algún vuelo, se muestra el número de ese vuelo, indicando si está programado o realizado.
 
 void HistorialPasajero(DatosVuelo Vuelos)
 {
@@ -552,8 +677,26 @@ void HistorialPasajero(DatosVuelo Vuelos)
     cout << "---------------------------" << endl;
 }
 
+
+// Función simple de menú principal.
 void menu()
 {
+    cout << "\n---------------------------" << endl;
+    cout << "   BIENVENIDO A VIAJAR!    " << endl;
+    cout << "---------------------------" << endl;
+    cout << "                       @@ " << endl;
+    cout << "                    @@@@@ " << endl;
+    cout << "   @@@@@          @@@@@@  " << endl;
+    cout << "   @@@@@@@@@@@@ @@@@@@@   " << endl;
+    cout << "      @@@@@@@@@@@@@@@     " << endl;
+    cout << "         @@@@@@@@@@       " << endl;
+    cout << "          @@@@@@@@@@      " << endl;
+    cout << "         @@@@@@@@@@@      " << endl;
+    cout << "       @@@@@@@ @@@@@@     " << endl;
+    cout << "  @@@@@@@@@@    @@@@@     " << endl;
+    cout << "    @@@@@         @@@@    " << endl;
+    cout << "     @@@@@         @@@    " << endl;
+    cout << "        @@          @     " << endl;
     cout << "\n---------------------------" << endl;
     cout << "        MENU PRINCIPAL     " << endl;
     cout << "---------------------------" << endl;
@@ -567,6 +710,7 @@ void menu()
     cout << "8. Mostrar Vuelos Realizados" << endl;
     cout << "9. Ver historial de Pasajero" << endl;
     cout << "10. Salir" << endl;
+    cout << "---------------------------" << endl;
     cout << "Seleccione una opcion: ";
 }
 
