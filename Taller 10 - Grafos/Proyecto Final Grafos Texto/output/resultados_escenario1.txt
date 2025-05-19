@@ -1,0 +1,30 @@
+Lista de Ubicaciones:
+Ubicacion: Casa de la Cultura
+Ubicacion: Teatro Principal
+Ubicacion: Biblioteca Nacional
+Ubicacion: Museo de Arte Moderno
+Ubicacion: Museo del Oro
+
+Lista de Caminos:
+Camino: Casa de la Cultura -> Teatro Principal (Distancia: 1 km)
+Camino: Teatro Principal -> Casa de la Cultura (Distancia: 1 km)
+Camino: Teatro Principal -> Museo de Arte Moderno (Distancia: 1 km)
+Camino: Museo de Arte Moderno -> Teatro Principal (Distancia: 1 km)
+Camino: Biblioteca Nacional -> Museo del Oro (Distancia: 1 km)
+Camino: Museo del Oro -> Biblioteca Nacional (Distancia: 1 km)
+Camino: Museo del Arte Moderno -> Museo del Oro (Distancia: 1 km)
+Camino: Museo del Oro -> Museo de Arte Moderno (Distancia: 1 km)
+
+Recorridos BFS desde cada vertice:
+Desde Casa de la Cultura: Casa de la Cultura -> Teatro Principal -> Museo de Arte Moderno
+Desde Teatro Principal: Teatro Principal -> Casa de la Cultura -> Museo de Arte Moderno
+Desde Biblioteca Nacional: Biblioteca Nacional -> Museo del Oro -> Museo de Arte Moderno -> Teatro Principal -> Casa de la Cultura
+Desde Museo de Arte Moderno: Museo de Arte Moderno -> Teatro Principal -> Casa de la Cultura
+Desde Museo del Oro: Museo del Oro -> Biblioteca Nacional -> Museo de Arte Moderno -> Teatro Principal -> Casa de la Cultura
+
+Recorridos DFS desde cada vertice:
+Desde Casa de la Cultura: Casa de la Cultura -> Teatro Principal -> Museo de Arte Moderno
+Desde Teatro Principal: Teatro Principal -> Casa de la Cultura -> Museo de Arte Moderno
+Desde Biblioteca Nacional: Biblioteca Nacional -> Museo del Oro -> Museo de Arte Moderno -> Teatro Principal -> Casa de la Cultura
+Desde Museo de Arte Moderno: Museo de Arte Moderno -> Teatro Principal -> Casa de la Cultura
+Desde Museo del Oro: Museo del Oro -> Biblioteca Nacional -> Museo de Arte Moderno -> Teatro Principal -> Casa de la Cultura

@@ -1,11 +1,11 @@
 #include <iostream>
-#include "header.h"
+#include "rojonegro.h"
 
 using namespace std;
-int main()
-{
-    ABB arbol = NULL;
-    // 10, 8, 15, 18, 14, 20, 3, 4, 2, 9, 20, 25, 7, 16, 29, 28, 26
+
+int main(){
+    RBT arbol = NULL;
+    // 20, 10, 30, 40, 27, 35, 40, 50, 60, 67, 80, 62, 70, 83, 84, 85
     insertar(arbol, 10);
     insertar(arbol, 8);
     insertar(arbol, 15);
@@ -23,9 +23,6 @@ int main()
     insertar(arbol, 29);
     insertar(arbol, 28);
     insertar(arbol, 26);
-    // Ver el árbol
-    cout << "El árbol es el siguiente: " << endl;
     verArbol(arbol, 0);
-
     
 }

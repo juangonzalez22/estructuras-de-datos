@@ -1,11 +1,10 @@
 #include <iostream>
-#include "header.h"
+#include "avl.h"
 
 using namespace std;
-int main()
-{
-    ABB arbol = NULL;
-    // 10, 8, 15, 18, 14, 20, 3, 4, 2, 9, 20, 25, 7, 16, 29, 28, 26
+
+int main(){
+    AVL arbol = NULL;
     insertar(arbol, 10);
     insertar(arbol, 8);
     insertar(arbol, 15);
@@ -23,9 +22,10 @@ int main()
     insertar(arbol, 29);
     insertar(arbol, 28);
     insertar(arbol, 26);
-    // Ver el árbol
-    cout << "El árbol es el siguiente: " << endl;
+
+
     verArbol(arbol, 0);
 
-    
+
+    cout << "Rotaciones totales: " << rotaciones << endl;
 }
